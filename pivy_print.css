@@ -1,0 +1,124 @@
+@media print {
+  body * {
+    visibility:hidden;
+  }
+  #print-area, #print-area * {
+    visibility:visible;
+  }
+  #print-area {
+    position:absolute;
+    left:0;
+    top:0;
+  }
+}
+
+#print-area div.card {
+  margin: 4px;
+  padding: 4px;
+  width: 200px;
+  height: 200px;
+  float: left;
+  border-radius: 2px;
+  -webkit-box-shadow: 5px 5px 10px #A0A0A0;
+  -moz-box-shadow: 5px 5px 10px #A0A0A0;
+  box-shadow: 5px 5px 10px #A0A0A0;
+}
+
+#print-area div.card div {
+  overflow: hidden;
+}
+
+#print-area div.task.background {
+    border: 1px solid #8DA404;
+    background-color: #F2F5A9;
+    background: -moz-linear-gradient(top, #F2F5A9, #D2D589);
+    background: -webkit-gradient(linear, left top, left bottom, from(#F2F5A9),
+    to(#D2D589) );
+}
+
+#print-area div.task.foreground {
+    padding: 2px;
+    border: 2px solid #FEAE00;
+}
+
+#print-area div.blocker.background {
+  border: 1px solid #610B0B;
+  background-color: #F5A9A9;
+  background: -moz-linear-gradient(top, #F5A9A9, #F59999);
+  background: -webkit-gradient(linear, left top, left bottom, from(#F5A9A9),
+    to(#F59999) );
+}
+
+#print-area div.blocker.foreground {
+    border: 2px solid #610B0B;
+    padding: 2px;
+}
+
+#print-area div.story.background {
+    border: 1px solid #084B8A;
+    background-color: #A9D0F5;
+    background: -moz-linear-gradient(top, #A9D0F5, #99C0E5);
+    background: -webkit-gradient(linear, left top, left bottom, from(#A9D0F5),
+    to(#99C0E5) );
+}
+
+#print-area div.story.foreground {
+    padding: 2px;
+    border: 2px solid #084B8A;
+}
+
+#print-area div.task div {
+  margin: 0px;
+  padding: 2px;
+}
+
+#print-area div.task .story-identifier {
+  text-align: center;
+  height: 20px;
+}
+
+#print-area div.task.normal.background .story-identifier {
+    border-bottom: 1px solid #D2D589;
+}
+
+#print-area div.task.normal.foreground .story-identifier {
+    border-bottom: 1px solid #FEAE00;
+}
+
+#print-area div.blocker .story-identifier {
+  border-bottom: 1px solid #610B0B;
+  text-align: center;
+}
+
+#print-area div.story .identifier {
+  border-bottom: 1px solid #084B8A;
+  text-align: center;
+  font-weight: bold;
+    font-size: 1.3em;
+  padding-top: 1em;
+  padding-bottom: 1.5em;
+}
+
+#print-area div.task .tags {
+  height: 20px;
+  text-align: center;
+  font-size: .9em;
+  font-style: italic;
+}
+
+#print-area div.task.normal.background .tags {
+    border-top: 1px solid #B2B569;
+}
+
+#print-area div.task.normal.foreground .tags {
+    border-top: 1px solid #FEAE00;
+}
+
+#print-area div.blocker .tags {
+  border-top: 1px solid #410000;
+}
+
+#print-area div.task .description {
+  height: 154px;
+  padding: 2px;
+}

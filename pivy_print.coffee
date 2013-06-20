@@ -11,9 +11,10 @@ $ ->
       type = ($.grep classInfo, (elem) ->
         elem.match(/(?:bug)|(?:chore)|(?:feature)/))[0]
       title = $story.find('.story_name').html()
+      story_points = if (points = $story.find('.meta').text()) isnt '-1' then "(#{points})" else ''
       print_id = "print_story_#{id}"
       if $this.hasClass('selected')
-        div = "<div id='#{print_id}' class='card task normal background'><div class='story-identifier'>##{id}</div><div class='description'>#{title}<br></div><div class='tags'>#{type}</div></div>"
+        div = "<div id='#{print_id}' class='card task normal background'><div class='story-identifier'>##{id}</div><div class='description'>#{title}<br></div><div class='tags'>#{type} #{story_points} </div></div>"
         $('#print-area').append(div)
       else
         $("##{print_id}").remove()

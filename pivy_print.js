@@ -4,7 +4,7 @@
     $(document).ready(function() {
       $('body').append("<div id='print-area'></div>");
       $(document).on('click', 'header.preview .selector', function(e) {
-        var $story, $this, classInfo, div, id, print_id, title, type;
+        var $story, $this, classInfo, div, id, points, print_id, story_points, title, type;
 
         $this = $(this);
         $story = $this.closest('.story');
@@ -16,9 +16,10 @@
           return elem.match(/(?:bug)|(?:chore)|(?:feature)/);
         }))[0];
         title = $story.find('.story_name').html();
+        story_points = (points = $story.find('.meta').text()) !== '-1' ? "(" + points + ")" : '';
         print_id = "print_story_" + id;
         if ($this.hasClass('selected')) {
-          div = "<div id='" + print_id + "' class='card task normal background'><div class='story-identifier'>#" + id + "</div><div class='description'>" + title + "<br></div><div class='tags'>" + type + "</div></div>";
+          div = "<div id='" + print_id + "' class='card task normal background'><div class='story-identifier'>#" + id + "</div><div class='description'>" + title + "<br></div><div class='tags'>" + type + " " + story_points + " </div></div>";
           return $('#print-area').append(div);
         } else {
           return $("#" + print_id).remove();

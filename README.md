@@ -22,10 +22,10 @@ Tested with Chrome 26.
 ## How to contribute
 
 1. Fork the project
-2. Make one or commits to the repository.
+2. Make one or more commits to the repository.
 3. Open a pull request.
 
-You can also consider [opening the issue](https://github.com/sudodoki/pivy-print/issues/new).  
+You can also consider [opening an issue](https://github.com/sudodoki/pivy-print/issues/new).  
 
 ## The MIT License (MIT)
 

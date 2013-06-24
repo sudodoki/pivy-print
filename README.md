@@ -7,7 +7,7 @@ To install extension, you'll have to obtain its source
 or download the [zip archive](https://github.com/sudodoki/pivy-print/archive/master.zip).
 Click the Chrome menu icon ![three lines icon](http://developer.chrome.com/static/images/hotdogmenu.png)  and select Extensions from the Tools menu. Ensure that the "Developer mode" checkbox in the top right-hand corner is checked. Now you can reload extensions, load an unpacked directory of files as if it were a packaged extension, and more. Click 'Load unpacked extensions...' and select folder with plugin.
 Before using the plugin, you have to input your Pivotal Tracker API key. To do so, visit [your profile page](https://www.pivotaltracker.com/profile) and find the API key section (at the bottom).
-Click the print icon ![printer](https://raw.github.com/sudodoki/pivy-print/images/icon.png) in your address bar panel. You should see the  
+Click the print icon ![printer](https://raw.github.com/sudodoki/pivy-print/master/icon.png) in your address bar panel. You should see the  
 ![first_time_popup](https://raw.github.com/sudodoki/pivy-print/images/first_time_popup.png)  
 Enter your API key (you can change it later).
 Now on your pivotal project page you should see the extra item in 'Stories ▼' dropdown - Print  
@@ -27,7 +27,9 @@ So, there're these versions in the wild:
 ## TODO
 
 * Add text fields to edit cards before print.  
-* Considering this: next version might work with pivotal API to provide full info on stories (now only story titles are used).  
+* Add settings page to set whether to use API or html parse
+* Add ability to edit css for cards
+* Add ability to edit templates for cards
 
 ## How to contribute
 

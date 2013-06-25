@@ -1,0 +1,61 @@
+<html>
+<head>
+  <title>My Test Extension Options</title>
+  <link rel="stylesheet" type="text/css" href="options.css" media="screen" />
+  <style id='optional_css' type="text/css"></style>
+
+</head>
+
+<body>
+
+<form id='options' action="/lol_actions">
+  <fieldset>
+    <legend>Preferable method to obtain information</legend>
+    <label for="method">For stories info I should use:</label><br>
+    <input type="radio" name="method" value="API">API (this methods requires key).<br>
+    <div class="api_key_input"  style='display:none;'>
+      <input required="required" type="text" name='api_key' placeholder='enter your API key'>
+      <br>
+    </div>
+    <input type="radio" name="method" value="DOM">DOM parse (simpler but limits information available for extension).<br>
+  </fieldset>
+
+  <input id='toggle_css' type="button" value='Toggle the css edit'><br>
+  <div id="css_edit_block" style='display:none'>
+    <textarea name="css" id="css_edit" cols="90" rows="30"></textarea><br>
+    <input id='update_css' type="button" value='Check the css'><br>
+    <h2>Preview:</h2>
+    <div id="print-area" class='clearfix' style='visibility: visible'>
+      <div id="print_story_random_id_here" class="card task normal background">
+        <div class="story-identifier">#123456789</div>
+        <div class="description">
+          Damage report! I recommend you don't fire until you're within 40,000 kilometers.
+              <br></div>
+            <div class="tags">bug</div>
+          </div>
+          <div id="print_story_random_id_here2" class="card task normal background">
+            <div class="story-identifier">#234567891</div>
+            <div class="description">
+              Some days you get the bear, and some days the bear gets you. Maybe if we felt any human loss as keenly as we feel one of those close to us, human history would be far less bloody.
+              <br></div>
+            <div class="tags">feature (1)</div>
+          </div>
+          <div id="print_story_random_id_here3" class="card task normal background">
+            <div class="story-identifier">#345678912</div>
+            <div class="description">
+              Then maybe you should consider this: if anything happens to them, Starfleet is going to want a full investigation.
+                <br></div>
+              <div class="tags">chore</div>
+            </div>
+          </div>
+  </div><br>
+  <input type='submit' value='Save options' class='clearfix'><br>
+
+</form>
+<span class='notify' style='display:none;'>Your settings have been saved.</span>
+</body>
+
+<script src="jquery.min.js"></script>
+<script src="options.js"></script>
+
+</html>

@@ -3,16 +3,20 @@
 
   "name": "Pivy-print",
   "description": "This extension enables print for Pivotal tracker.",
-  "version": "0.8.0",
+  "version": "0.9.0",
 
   "permissions": [
     "https://www.pivotaltracker.com/",
-    "storage"
+    "storage",
+    "background"
   ],
-  "browser_action": {
-    "default_icon": "icon.png",
-    "default_popup": "popup.html"
+  "background": {
+    "scripts": ["background.js"]
   },
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+  "options_page": "options.html",
   "content_scripts": [
     {
       "matches": ["https://www.pivotaltracker.com/*"],

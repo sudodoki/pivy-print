@@ -6,10 +6,11 @@ To install extension, you'll have to obtain its source
 ``` git clone git@github.com:sudodoki/pivy-print.git ```
 or download the [zip archive](https://github.com/sudodoki/pivy-print/archive/master.zip).
 Click the Chrome menu icon ![three lines icon](http://developer.chrome.com/static/images/hotdogmenu.png)  and select Extensions from the Tools menu. Ensure that the "Developer mode" checkbox in the top right-hand corner is checked. Now you can reload extensions, load an unpacked directory of files as if it were a packaged extension, and more. Click 'Load unpacked extensions...' and select folder with plugin.
-Before using the plugin, you have to input your Pivotal Tracker API key. To do so, visit [your profile page](https://www.pivotaltracker.com/profile) and find the API key section (at the bottom).
-Click the print icon ![printer](https://raw.github.com/sudodoki/pivy-print/master/icon.png) in your address bar panel. You should see the  
-![first_time_popup](https://raw.github.com/sudodoki/pivy-print/images/first_time_popup.png)  
-Enter your API key (you can change it later).
+Before using the plugin, you have to set some options. Click plugin icon ![printer](https://raw.github.com/sudodoki/pivy-print/master/icon.png) in your address bar panel. You should see the options page:  
+
+![option_page](https://raw.github.com/sudodoki/pivy-print/images/options_page.png)  
+You can use either simple DOM parsing (same, as v0.5 of the plugin) or API (will come in handy when we add more fields) - in latter case you'll have to input the Pivotal API key (you can find it at the bottom of [your profile page](https://www.pivotaltracker.com/profile) ).
+Option page also grants you ability to edit cards css (as well as of other elements, since it's just being injected into page, but shhh..)
 Now on your pivotal project page you should see the extra item in 'Stories ▼' dropdown - Print  
 ![screenshot](https://raw.github.com/sudodoki/pivy-print/images/print_disabled_select.png)  
 After selecting some stories, click the Print button from dropdown
@@ -22,13 +23,11 @@ Tested with Chrome 26.
 ## Versions
 So, there're these versions in the wild:
 * [v0.5](https://github.com/sudodoki/pivy-print/tree/v0.5). [Download zip](https://github.com/sudodoki/pivy-print/archive/v0.5.zip). Provides basic cards based on html parsing. Cards state title, type, id and points (for features). Just plug it in - no settings, no API keys, check some checkboxes for stories and click print to print those out.
-
+* [v0.8](https://github.com/sudodoki/pivy-print/tree/v0.8). [Download zip](https://github.com/sudodoki/pivy-print/archive/v0.8.zip). Provides basic cards based on API responses. Cards state title, type, id and points (for features). Need to input API key using extension's popup.
 
 ## TODO
 
 * Add text fields to edit cards before print.  
-* Add settings page to set whether to use API or html parse
-* Add ability to edit css for cards
 * Add ability to edit templates for cards
 
 ## How to contribute

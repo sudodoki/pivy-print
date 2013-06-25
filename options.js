@@ -4,9 +4,6 @@
     var default_css, updateCSS;
 
     default_css = "#print-area div.card {\n  margin: 4px;\n  padding: 4px;\n  width: 200px;\n  height: 200px;\n  float: left;\n  border-radius: 10px;\n  -webkit-box-shadow: 5px 5px 10px #A0A0A0;\n  -moz-box-shadow: 5px 5px 10px #A0A0A0;\n  box-shadow: 5px 5px 10px #A0A0A0;\n}\n\n#print-area div.card div {\n  overflow: hidden;\n}\n\n#print-area div.task.background {\n    border: 1px solid #8DA404;\n    background-color: #F2F5A9;\n    background: -moz-linear-gradient(top, #F2F5A9, #D2D589);\n    background: -webkit-gradient(linear, left top, left bottom, from(#F2F5A9),\n    to(#D2D589) );\n}\n\n#print-area div.task div {\n  margin: 0px;\n  padding: 2px;\n}\n\n#print-area div.task .story-identifier {\n  text-align: center;\n  height: 20px;\n}\n\n#print-area div.task.normal.background .story-identifier {\n    border-bottom: 1px solid #D2D589;\n}\n\n#print-area div.task.normal.foreground .story-identifier {\n    border-bottom: 1px solid #FEAE00;\n}\n\n#print-area div.task .tags {\n  height: 20px;\n  text-align: center;\n  font-size: .9em;\n  font-style: italic;\n}\n\n#print-area div.task.normal.background .tags {\n    border-top: 1px solid #B2B569;\n}\n\n#print-area div.task.normal.foreground .tags {\n    border-top: 1px solid #FEAE00;\n}\n\n\n#print-area div.task .description {\n  height: 154px;\n  padding: 2px;\n}";
-    chrome.storage.sync.remove('optional_css');
-    chrome.storage.sync.remove('pivotal_method');
-    chrome.storage.sync.remove('pivotal_api_key');
     updateCSS = function(cssText) {
       $('#optional_css').text(cssText);
       return $('#css_edit').val(cssText);
@@ -64,6 +61,7 @@
           });
           break;
         case 'DOM':
+          $("[name='api_key']").attr('disabled', 'disabled');
           chrome.storage.sync.set({
             'pivotal_method': 'DOM'
           });
@@ -75,9 +73,10 @@
         "optional_css": $('#css_edit').val()
       });
       $('.notify').fadeIn('fast');
-      return setTimeout((function() {
+      setTimeout((function() {
         return $('.notify').fadeOut('fast');
       }), 3000);
+      return $("[name='api_key']").removeAttr('disabled');
     });
   });
 

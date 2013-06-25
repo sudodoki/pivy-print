@@ -63,9 +63,6 @@ $ ->
       padding: 2px;
     }
   """
-  chrome.storage.sync.remove('optional_css')
-  chrome.storage.sync.remove('pivotal_method')
-  chrome.storage.sync.remove('pivotal_api_key')
   updateCSS = (cssText) ->
     $('#optional_css').text(cssText)
     $('#css_edit').val(cssText)
@@ -105,6 +102,7 @@ $ ->
         chrome.storage.sync.set {'pivotal_method': 'API'}
         chrome.storage.sync.set {'pivotal_api_key': $("input[name='api_key']").val()}
       when 'DOM'
+        $("[name='api_key']").attr('disabled', 'disabled')
         chrome.storage.sync.set {'pivotal_method': 'DOM'}
       else
         return alert('Something went wrong')
@@ -113,3 +111,4 @@ $ ->
     setTimeout((->
       $('.notify').fadeOut('fast')
     ), 3000)
+    $("[name='api_key']").removeAttr('disabled')

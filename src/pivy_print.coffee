@@ -61,11 +61,15 @@ $ ->
   $(document).ready ->
     $('head').append("<style id='optional_css' type='text/css'></style>")
     $('body').append("<div id='print-area'></div>")
+
+
+
     chrome.storage.sync.get 'optional_css', (result) ->
       if (cssText = result.optional_css)
         $('#optional_css').text(cssText)
       else
-        alert 'Set some options to use pivy-print. Click the icon in the address bar panel.'
+        $.when($.get(chrome.extension.getURL("default.css"))).done (response) ->
+          $('#optional_css').text(response)
 
 
     chrome.storage.sync.get 'pivotal_method', (result) ->

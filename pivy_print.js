@@ -87,7 +87,9 @@
         if ((cssText = result.optional_css)) {
           return $('#optional_css').text(cssText);
         } else {
-          return alert('Set some options to use pivy-print. Click the icon in the address bar panel.');
+          return $.when($.get(chrome.extension.getURL("default.css"))).done(function(response) {
+            return $('#optional_css').text(response);
+          });
         }
       });
       chrome.storage.sync.get('pivotal_method', function(result) {

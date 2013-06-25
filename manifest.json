@@ -23,5 +23,7 @@
       "js": ["jquery.min.js", "pivy_print.js"],
       "css": ["pivy_print.css"]
     }
-  ]
+  ],
+  "web_accessible_resources": ["default.css"]
+
 }

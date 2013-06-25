@@ -6,7 +6,7 @@ To install extension, you'll have to obtain its source
 ``` git clone git@github.com:sudodoki/pivy-print.git ```
 or download the [zip archive](https://github.com/sudodoki/pivy-print/archive/master.zip).
 Click the Chrome menu icon ![three lines icon](http://developer.chrome.com/static/images/hotdogmenu.png)  and select Extensions from the Tools menu. Ensure that the "Developer mode" checkbox in the top right-hand corner is checked. Now you can reload extensions, load an unpacked directory of files as if it were a packaged extension, and more. Click 'Load unpacked extensions...' and select folder with plugin.
-Before using the plugin, you have to set some options. Click plugin icon ![printer](https://raw.github.com/sudodoki/pivy-print/master/icon.png) in your address bar panel. You should see the options page:  
+Before using the plugin, you may have to set some options (otherwise it will be defaulted to using DOM parsing). Click plugin icon ![printer](https://raw.github.com/sudodoki/pivy-print/master/icon.png) in your address bar panel. You should see the options page:  
 
 ![option_page](https://raw.github.com/sudodoki/pivy-print/images/options_page.png)  
 You can use either simple DOM parsing (same, as v0.5 of the plugin) or API (will come in handy when we add more fields) - in latter case you'll have to input the Pivotal API key (you can find it at the bottom of [your profile page](https://www.pivotaltracker.com/profile) ).

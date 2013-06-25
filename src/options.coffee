@@ -1,78 +1,15 @@
 $ ->
-  default_css = """
-    #print-area div.card {
-      margin: 4px;
-      padding: 4px;
-      width: 200px;
-      height: 200px;
-      float: left;
-      border-radius: 10px;
-      -webkit-box-shadow: 5px 5px 10px #A0A0A0;
-      -moz-box-shadow: 5px 5px 10px #A0A0A0;
-      box-shadow: 5px 5px 10px #A0A0A0;
-    }
-
-    #print-area div.card div {
-      overflow: hidden;
-    }
-
-    #print-area div.task.background {
-        border: 1px solid #8DA404;
-        background-color: #F2F5A9;
-        background: -moz-linear-gradient(top, #F2F5A9, #D2D589);
-        background: -webkit-gradient(linear, left top, left bottom, from(#F2F5A9),
-        to(#D2D589) );
-    }
-
-    #print-area div.task div {
-      margin: 0px;
-      padding: 2px;
-    }
-
-    #print-area div.task .story-identifier {
-      text-align: center;
-      height: 20px;
-    }
-
-    #print-area div.task.normal.background .story-identifier {
-        border-bottom: 1px solid #D2D589;
-    }
-
-    #print-area div.task.normal.foreground .story-identifier {
-        border-bottom: 1px solid #FEAE00;
-    }
-
-    #print-area div.task .tags {
-      height: 20px;
-      text-align: center;
-      font-size: .9em;
-      font-style: italic;
-    }
-
-    #print-area div.task.normal.background .tags {
-        border-top: 1px solid #B2B569;
-    }
-
-    #print-area div.task.normal.foreground .tags {
-        border-top: 1px solid #FEAE00;
-    }
-
-
-    #print-area div.task .description {
-      height: 154px;
-      padding: 2px;
-    }
-  """
+  # chrome.storage.sync.remove('optional_css')
   updateCSS = (cssText) ->
     $('#optional_css').text(cssText)
     $('#css_edit').val(cssText)
 
   chrome.storage.sync.get 'optional_css', (result) ->
     unless result.optional_css
-      optional_css = default_css
-    else 
-      optional_css = result.optional_css
-    updateCSS optional_css
+      $.when($.get(chrome.extension.getURL("default.css"))).done (optional_css) ->
+        updateCSS optional_css
+    else
+      updateCSS result.optional_css
 
   $('#update_css').on 'click', (e) ->
     optional_css = $('#css_edit').val()

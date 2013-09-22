@@ -8,8 +8,8 @@ attachAPIHandlers = ->
         beforeSend: (request) ->
           request.setRequestHeader("X-TrackerToken", result.pivotal_api_key)
         url: "https://www.pivotaltracker.com/services/v3/projects/#{project_id}/stories/#{id}"
-        success: (cardInfo, status, xhr) -> 
-          console.log cardInfo
+        success: (cardInfo, status, xhr) ->
+          # console.log cardInfo
           story_points = if $(cardInfo).find('estimate').length
             " (" + $(cardInfo).find('estimate').text() + ') '
           else
@@ -38,7 +38,7 @@ attachAPIHandlers = ->
     if $this.hasClass('selected')
       createAPICard(project_id, id)
     else
-      $("#print_story_#{print_id}").remove()
+      $("#print_story_#{id}").remove()
 
 attachDOMHandlers = ->
   $(document).on 'click', 'header.preview .selector', (e) ->

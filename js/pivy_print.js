@@ -20,6 +20,7 @@
           success: function(cardInfo, status, xhr) {
             var div, story_points;
 
+            console.log(cardInfo);
             story_points = $(cardInfo).find('estimate').length ? " (" + $(cardInfo).find('estimate').text() + ') ' : '';
             div = "<div id='" + print_id + "' class='card task normal background'>\n  <div class='story-identifier'>#" + id + "</div>\n  <div class='description'>" + ($(cardInfo).find('name').text()) + "<br></div>\n  <div class='tags'>" + ($(cardInfo).find('story_type').text()) + " " + story_points + " </div>\n</div>";
             return $('#print-area').append(div);
@@ -80,6 +81,7 @@
   $(function() {
     $(document).ready(function() {
       $('head').append("<style id='optional_css' type='text/css'></style>");
+      $('head').append("<script src='" + (chrome.extension.getURL("js/mustache.js")) + "'></script>");
       $('body').append("<div id='print-area'></div>");
       chrome.storage.sync.get('optional_css', function(result) {
         var cssText;
@@ -87,7 +89,7 @@
         if ((cssText = result.optional_css)) {
           return $('#optional_css').text(cssText);
         } else {
-          return $.when($.get(chrome.extension.getURL("default.css"))).done(function(response) {
+          return $.when($.get(chrome.extension.getURL("css/default.css"))).done(function(response) {
             return $('#optional_css').text(response);
           });
         }

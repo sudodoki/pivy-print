@@ -9,6 +9,7 @@ attachAPIHandlers = ->
           request.setRequestHeader("X-TrackerToken", result.pivotal_api_key)
         url: "https://www.pivotaltracker.com/services/v3/projects/#{project_id}/stories/#{id}"
         success: (cardInfo, status, xhr) -> 
+          console.log cardInfo
           story_points = if $(cardInfo).find('estimate').length
             " (" + $(cardInfo).find('estimate').text() + ') '
           else
@@ -60,15 +61,15 @@ attachDOMHandlers = ->
 $ ->
   $(document).ready ->
     $('head').append("<style id='optional_css' type='text/css'></style>")
+    $('head').append("<script src='#{ chrome.extension.getURL("js/mustache.js") }'></script>")
     $('body').append("<div id='print-area'></div>")
-
 
 
     chrome.storage.sync.get 'optional_css', (result) ->
       if (cssText = result.optional_css)
         $('#optional_css').text(cssText)
       else
-        $.when($.get(chrome.extension.getURL("default.css"))).done (response) ->
+        $.when($.get(chrome.extension.getURL("css/default.css"))).done (response) ->
           $('#optional_css').text(response)
 
 
@@ -82,7 +83,8 @@ $ ->
 
     $(document).on 'click', '.button.stories.menu', (e) ->
       $this = $(@)
-      $this.find('.items').append("<li id='print' class='item'><span class='disabled'>Print</span></li>") unless $('#print').length
+      unless $('#print').length
+        $this.find('.items').append("<li id='print' class='item'><span class='disabled'>Print</span></li>")
       if $this.find('.count').length
         $('#print span').removeClass('disabled')
       else

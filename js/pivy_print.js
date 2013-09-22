@@ -18,7 +18,13 @@
           success: function(cardInfo, status, xhr) {
             var div, story_points;
             story_points = $(cardInfo).find('estimate').length ? " (" + $(cardInfo).find('estimate').text() + ') ' : '';
-            div = "<div id='" + print_id + "' class='card task normal background'>\n  <div class='story-identifier'>#" + id + "</div>\n  <div class='description'>" + ($(cardInfo).find('name').text()) + "<br></div>\n  <div class='tags'>" + ($(cardInfo).find('story_type').text()) + " " + story_points + " </div>\n</div>";
+            div = Mustache.render($('#story_template').text(), {
+              print_id: print_id,
+              id: id,
+              name: $(cardInfo).find('name').text(),
+              story_type: $(cardInfo).find('story_type').text(),
+              story_points: story_points
+            });
             return $('#print-area').append(div);
           },
           error: function(xhr, error, status) {
@@ -50,7 +56,7 @@
 
   attachDOMHandlers = function() {
     return $(document).on('click', 'header.preview .selector', function(e) {
-      var $story, $this, classInfo, div, id, points, print_id, story_points, title, type;
+      var $story, $this, classInfo, div, id, name, points, print_id, story_points, type;
       $this = $(this);
       $story = $this.closest('.story');
       classInfo = $story.attr('class').split(' ');
@@ -60,11 +66,17 @@
       type = ($.grep(classInfo, function(elem) {
         return elem.match(/(?:bug)|(?:chore)|(?:feature)/);
       }))[0];
-      title = $story.find('.story_name').html();
+      name = $story.find('.story_name').html();
       story_points = (points = $story.find('.meta').text()) !== '-1' ? "(" + points + ")" : '';
       print_id = "print_story_" + id;
       if ($this.hasClass('selected')) {
-        div = "<div id='" + print_id + "' class='card task normal background'><div class='story-identifier'>#" + id + "</div><div class='description'>" + title + "<br></div><div class='tags'>" + type + " " + story_points + " </div></div>";
+        div = Mustache.render($('#story_template').text(), {
+          print_id: print_id,
+          id: id,
+          name: name,
+          story_type: type,
+          story_points: story_points
+        });
         return $('#print-area').append(div);
       } else {
         return $("#" + print_id).remove();
@@ -77,6 +89,17 @@
       $('head').append("<style id='optional_css' type='text/css'></style>");
       $('head').append("<script src='" + (chrome.extension.getURL("js/mustache.js")) + "'></script>");
       $('body').append("<div id='print-area'></div>");
+      $('body').append("<script type='text/html' id='story_template'></script>");
+      chrome.storage.sync.get('template', function(result) {
+        var template;
+        if ((template = result.template)) {
+          return $('#story_template').text(template);
+        } else {
+          return $.when($.get(chrome.extension.getURL("default_story.html"))).done(function(response) {
+            return $('#story_template').text(response);
+          });
+        }
+      });
       chrome.storage.sync.get('optional_css', function(result) {
         var cssText;
         if ((cssText = result.optional_css)) {

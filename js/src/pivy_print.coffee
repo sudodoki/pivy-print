@@ -9,17 +9,18 @@ attachAPIHandlers = ->
           request.setRequestHeader("X-TrackerToken", result.pivotal_api_key)
         url: "https://www.pivotaltracker.com/services/v3/projects/#{project_id}/stories/#{id}"
         success: (cardInfo, status, xhr) ->
-          # console.log cardInfo
           story_points = if $(cardInfo).find('estimate').length
             " (" + $(cardInfo).find('estimate').text() + ') '
           else
             ''
-          div = """
-          <div id='#{print_id}' class='card task normal background'>
-            <div class='story-identifier'>##{id}</div>
-            <div class='description'>#{$(cardInfo).find('name').text()}<br></div>
-            <div class='tags'>#{$(cardInfo).find('story_type').text()} #{story_points} </div>
-          </div>"""
+
+          div = Mustache.render $('#story_template').text(), {
+              print_id
+              id
+              name: $(cardInfo).find('name').text()
+              story_type: $(cardInfo).find('story_type').text()
+              story_points
+            }
           $('#print-area').append(div)
 
         error: (xhr, error, status) ->
@@ -49,11 +50,17 @@ attachDOMHandlers = ->
       elem.match(/story_\d+/))[0].split('_')[1]
     type = ($.grep classInfo, (elem) ->
       elem.match(/(?:bug)|(?:chore)|(?:feature)/))[0]
-    title = $story.find('.story_name').html()
+    name = $story.find('.story_name').html()
     story_points = if (points = $story.find('.meta').text()) isnt '-1' then "(#{points})" else ''
     print_id = "print_story_#{id}"
     if $this.hasClass('selected')
-      div = "<div id='#{print_id}' class='card task normal background'><div class='story-identifier'>##{id}</div><div class='description'>#{title}<br></div><div class='tags'>#{type} #{story_points} </div></div>"
+      div = Mustache.render $('#story_template').text(), {
+        print_id
+        id
+        name: name
+        story_type: type
+        story_points
+      }
       $('#print-area').append(div)
     else
       $("##{print_id}").remove()
@@ -63,7 +70,14 @@ $ ->
     $('head').append("<style id='optional_css' type='text/css'></style>")
     $('head').append("<script src='#{ chrome.extension.getURL("js/mustache.js") }'></script>")
     $('body').append("<div id='print-area'></div>")
+    $('body').append("<script type='text/html' id='story_template'></script>")
 
+    chrome.storage.sync.get 'template', (result) ->
+      if (template = result.template)
+        $('#story_template').text(template)
+      else
+        $.when($.get(chrome.extension.getURL("default_story.html"))).done (response) ->
+          $('#story_template').text(response)
 
     chrome.storage.sync.get 'optional_css', (result) ->
       if (cssText = result.optional_css)
@@ -71,7 +85,6 @@ $ ->
       else
         $.when($.get(chrome.extension.getURL("css/default.css"))).done (response) ->
           $('#optional_css').text(response)
-
 
     chrome.storage.sync.get 'pivotal_method', (result) ->
       if result.pivotal_method is "API"

@@ -24,6 +24,6 @@
       "css": ["css/pivy_print.css"]
     }
   ],
-  "web_accessible_resources": ["css/default.css", "js/mustache.js"]
+  "web_accessible_resources": ["css/default.css", "js/mustache.js", "default_story.html"]
 
 }

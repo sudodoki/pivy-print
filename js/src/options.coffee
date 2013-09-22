@@ -1,8 +1,46 @@
 $ ->
   # chrome.storage.sync.remove('optional_css')
+  updateHTML = (template) ->
+    $('#story_template').val(template)
+    rerender(template)
+
+  rerender = (template) ->
+    stories = [
+      {
+        print_id: 'print_story_random_id_here'
+        id: 123456789
+        name: "Damage report! I recommend you don't fire until you're within 40,000 kilometers."
+        story_type: 'bug'
+      },
+      {
+        print_id: 'print_story_random_id_here2'
+        id: 234567891
+        name: 'Some days you get the bear, and some days the bear gets you. Maybe if we felt any human loss as keenly as we feel one of those close to us, human history would be far less bloody.'
+        story_type: 'feature'
+        story_points: '(1)'
+      },
+      {
+        print_id: 'print_story_random_id_here3'
+        id: 345678912
+        name: 'Then maybe you should consider this: if anything happens to them, Starfleet is going to want a full investigation.'
+        story_type: 'chore'
+      }
+    ]
+    $('#print-area').empty()
+    for story in stories
+      div = Mustache.render template, story
+      $('#print-area').append(div)
+
   updateCSS = (cssText) ->
     $('#optional_css').text(cssText)
     $('#css_edit').val(cssText)
+
+  chrome.storage.sync.get 'template', (result) ->
+    unless result.template
+      $.when($.get(chrome.extension.getURL("default_story.html"))).done (story_template) ->
+        updateHTML story_template
+    else
+      updateHTML result.template
 
   chrome.storage.sync.get 'optional_css', (result) ->
     unless result.optional_css
@@ -15,6 +53,9 @@ $ ->
     optional_css = $('#css_edit').val()
     updateCSS optional_css
 
+  $('#update_html').on 'click', (e) ->
+    rerender $('#story_template').val()
+
   chrome.storage.sync.get 'pivotal_method', (result) ->
     if result.pivotal_method
       $("input[value=#{result.pivotal_method}]").click()
@@ -24,6 +65,9 @@ $ ->
 
   $('#toggle_css').on 'click', ->
     $('#css_edit_block').toggle()
+
+  $('#toggle_html').on 'click', ->
+    $('#template_edit_block').toggle()
 
   $('[name="method"]').on 'change', (e) ->
     if $(@).val() is 'API'
@@ -44,6 +88,7 @@ $ ->
       else
         return alert('Something went wrong')
     chrome.storage.sync.set {"optional_css": $('#css_edit').val()}
+    chrome.storage.sync.set {"template": $('#story_template').val()}
     $('.notify').fadeIn('fast')
     setTimeout((->
       $('.notify').fadeOut('fast')

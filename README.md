@@ -33,6 +33,7 @@ So, there're these versions in the wild:
 ## How to contribute
 
 1. Fork the project
+Tip: To watch coffee files for changes and recompile them, use `coffee -o js -cw js/src` from folder root, having installed coffee-script (`npm install -g coffee-script')
 2. Make one or more commits to the repository.
 3. Open a pull request.
 

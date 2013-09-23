@@ -5,6 +5,18 @@
   attachAPIHandlers = function() {
     var createAPICard;
     createAPICard = function(project_id, id) {
+      var extend, getAttr;
+      extend = function(target, other) {
+        var prop;
+        target = target || {};
+        for (prop in other) {
+          target[prop] = other[prop];
+        }
+        return target;
+      };
+      getAttr = function(xml, key) {
+        return $(xml).find(key).text();
+      };
       return chrome.storage.sync.get('pivotal_api_key', function(result) {
         var print_id;
         print_id = "print_story_" + id;
@@ -16,15 +28,25 @@
           },
           url: "https://www.pivotaltracker.com/services/v3/projects/" + project_id + "/stories/" + id,
           success: function(cardInfo, status, xhr) {
-            var div, story_points;
-            story_points = $(cardInfo).find('estimate').length ? " (" + $(cardInfo).find('estimate').text() + ') ' : '';
-            div = Mustache.render($('#story_template').text(), {
+            var div, info, param, params, story_points, toAdd, _i, _len, _ref;
+            story_points = $(cardInfo).find('estimate').length ? " (" + getAttr(cardInfo, 'estimate') + ') ' : '';
+            toAdd = {};
+            if (params = (_ref = $('#story_template').data('params')) != null ? _ref.split(', ') : void 0) {
+              for (_i = 0, _len = params.length; _i < _len; _i++) {
+                param = params[_i];
+                toAdd[param] = getAttr(cardInfo, param);
+              }
+              console.log(toAdd);
+            }
+            info = extend(toAdd, {
               print_id: print_id,
               id: id,
-              name: $(cardInfo).find('name').text(),
-              story_type: $(cardInfo).find('story_type').text(),
+              name: getAttr(cardInfo, 'name'),
+              story_type: getAttr(cardInfo, 'story_type'),
               story_points: story_points
             });
+            console.log(info);
+            div = Mustache.render($('#story_template').text(), info);
             return $('#print-area').append(div);
           },
           error: function(xhr, error, status) {
@@ -90,6 +112,13 @@
       $('head').append("<script src='" + (chrome.extension.getURL("js/mustache.js")) + "'></script>");
       $('body').append("<div id='print-area'></div>");
       $('body').append("<script type='text/html' id='story_template'></script>");
+      chrome.storage.sync.get('additional_params', function(result) {
+        var params;
+        console.log(result.additional_params);
+        if ((params = result.additional_params)) {
+          return $('#story_template').data('params', params.join(', '));
+        }
+      });
       chrome.storage.sync.get('template', function(result) {
         var template;
         if ((template = result.template)) {

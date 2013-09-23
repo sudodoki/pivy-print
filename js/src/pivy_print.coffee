@@ -1,6 +1,14 @@
+
 attachAPIHandlers = ->
   createAPICard = (project_id, id) ->
-    chrome.storage.sync.get 'pivotal_api_key', (result) ->
+    extend = (target, other) ->
+      target = target or {}
+      for prop of other
+        target[prop] = other[prop]
+      target
+    getAttr = (xml, key) ->
+      $(xml).find(key).text()
+    chrome.storage .sync.get 'pivotal_api_key', (result) ->
       print_id = "print_story_#{id}"
       $.ajax
         type: "GET"
@@ -10,17 +18,23 @@ attachAPIHandlers = ->
         url: "https://www.pivotaltracker.com/services/v3/projects/#{project_id}/stories/#{id}"
         success: (cardInfo, status, xhr) ->
           story_points = if $(cardInfo).find('estimate').length
-            " (" + $(cardInfo).find('estimate').text() + ') '
+            " (" + getAttr(cardInfo, 'estimate') + ') '
           else
             ''
-
-          div = Mustache.render $('#story_template').text(), {
+          toAdd = {}
+          if params = $('#story_template').data('params')?.split(', ')
+            for param in params
+              toAdd[param] = getAttr(cardInfo, param)
+            console.log toAdd
+          info = extend(toAdd, {
               print_id
               id
-              name: $(cardInfo).find('name').text()
-              story_type: $(cardInfo).find('story_type').text()
+              name: getAttr(cardInfo, 'name')
+              story_type: getAttr(cardInfo, 'story_type')
               story_points
-            }
+            })
+          console.log info
+          div = Mustache.render $('#story_template').text(), info
           $('#print-area').append(div)
 
         error: (xhr, error, status) ->
@@ -71,6 +85,11 @@ $ ->
     $('head').append("<script src='#{ chrome.extension.getURL("js/mustache.js") }'></script>")
     $('body').append("<div id='print-area'></div>")
     $('body').append("<script type='text/html' id='story_template'></script>")
+
+    chrome.storage.sync.get 'additional_params', (result) ->
+      console.log result.additional_params
+      if (params = result.additional_params)
+        $('#story_template').data 'params', params.join(', ')
 
     chrome.storage.sync.get 'template', (result) ->
       if (template = result.template)

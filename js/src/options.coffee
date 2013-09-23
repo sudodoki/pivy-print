@@ -4,6 +4,17 @@ $ ->
     $('#story_template').val(template)
     rerender(template)
 
+  updateExtra = (template) ->
+    defaults = ['print_id', 'id', 'name', 'story_type', 'story_points']
+    additional = []
+    attrs = template.match(/\{\{\s*([\w_-]*\s*)\}\}/gm)
+    for attr in attrs
+      attr = attr.slice(2, -2).replace(/\s+/g, '')
+      unless attr in defaults
+        additional.push attr
+    $('#story_template').data('params', additional)
+    console.log(additional)
+
   rerender = (template) ->
     stories = [
       {
@@ -54,7 +65,9 @@ $ ->
     updateCSS optional_css
 
   $('#update_html').on 'click', (e) ->
-    rerender $('#story_template').val()
+    template = $('#story_template').val()
+    updateExtra template
+    rerender template
 
   chrome.storage.sync.get 'pivotal_method', (result) ->
     if result.pivotal_method
@@ -89,6 +102,7 @@ $ ->
         return alert('Something went wrong')
     chrome.storage.sync.set {"optional_css": $('#css_edit').val()}
     chrome.storage.sync.set {"template": $('#story_template').val()}
+    chrome.storage.sync.set {'additional_params': $('#story_template').data('params')}
     $('.notify').fadeIn('fast')
     setTimeout((->
       $('.notify').fadeOut('fast')

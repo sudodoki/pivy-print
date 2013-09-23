@@ -1,6 +1,14 @@
+
 attachAPIHandlers = ->
   createAPICard = (project_id, id) ->
-    chrome.storage.sync.get 'pivotal_api_key', (result) ->
+    extend = (target, other) ->
+      target = target or {}
+      for prop of other
+        target[prop] = other[prop]
+      target
+    getAttr = (xml, key) ->
+      $(xml).find(key).text()
+    chrome.storage .sync.get 'pivotal_api_key', (result) ->
       print_id = "print_story_#{id}"
       $.ajax
         type: "GET"
@@ -8,17 +16,25 @@ attachAPIHandlers = ->
         beforeSend: (request) ->
           request.setRequestHeader("X-TrackerToken", result.pivotal_api_key)
         url: "https://www.pivotaltracker.com/services/v3/projects/#{project_id}/stories/#{id}"
-        success: (cardInfo, status, xhr) -> 
+        success: (cardInfo, status, xhr) ->
           story_points = if $(cardInfo).find('estimate').length
-            " (" + $(cardInfo).find('estimate').text() + ') '
+            " (" + getAttr(cardInfo, 'estimate') + ') '
           else
             ''
-          div = """
-          <div id='#{print_id}' class='card task normal background'>
-            <div class='story-identifier'>##{id}</div>
-            <div class='description'>#{$(cardInfo).find('name').text()}<br></div>
-            <div class='tags'>#{$(cardInfo).find('story_type').text()} #{story_points} </div>
-          </div>"""
+          toAdd = {}
+          if params = $('#story_template').data('params')?.split(', ')
+            for param in params
+              toAdd[param] = getAttr(cardInfo, param)
+            console.log toAdd
+          info = extend(toAdd, {
+              print_id
+              id
+              name: getAttr(cardInfo, 'name')
+              story_type: getAttr(cardInfo, 'story_type')
+              story_points
+            })
+          console.log info
+          div = Mustache.render $('#story_template').text(), info
           $('#print-area').append(div)
 
         error: (xhr, error, status) ->
@@ -37,7 +53,7 @@ attachAPIHandlers = ->
     if $this.hasClass('selected')
       createAPICard(project_id, id)
     else
-      $("#print_story_#{print_id}").remove()
+      $("#print_story_#{id}").remove()
 
 attachDOMHandlers = ->
   $(document).on 'click', 'header.preview .selector', (e) ->
@@ -48,11 +64,17 @@ attachDOMHandlers = ->
       elem.match(/story_\d+/))[0].split('_')[1]
     type = ($.grep classInfo, (elem) ->
       elem.match(/(?:bug)|(?:chore)|(?:feature)/))[0]
-    title = $story.find('.story_name').html()
+    name = $story.find('.story_name').html()
     story_points = if (points = $story.find('.meta').text()) isnt '-1' then "(#{points})" else ''
     print_id = "print_story_#{id}"
     if $this.hasClass('selected')
-      div = "<div id='#{print_id}' class='card task normal background'><div class='story-identifier'>##{id}</div><div class='description'>#{title}<br></div><div class='tags'>#{type} #{story_points} </div></div>"
+      div = Mustache.render $('#story_template').text(), {
+        print_id
+        id
+        name: name
+        story_type: type
+        story_points
+      }
       $('#print-area').append(div)
     else
       $("##{print_id}").remove()
@@ -60,17 +82,28 @@ attachDOMHandlers = ->
 $ ->
   $(document).ready ->
     $('head').append("<style id='optional_css' type='text/css'></style>")
+    $('head').append("<script src='#{ chrome.extension.getURL("js/mustache.js") }'></script>")
     $('body').append("<div id='print-area'></div>")
+    $('body').append("<script type='text/html' id='story_template'></script>")
 
+    chrome.storage.sync.get 'additional_params', (result) ->
+      console.log result.additional_params
+      if (params = result.additional_params)
+        $('#story_template').data 'params', params.join(', ')
 
+    chrome.storage.sync.get 'template', (result) ->
+      if (template = result.template)
+        $('#story_template').text(template)
+      else
+        $.when($.get(chrome.extension.getURL("default_story.html"))).done (response) ->
+          $('#story_template').text(response)
 
     chrome.storage.sync.get 'optional_css', (result) ->
       if (cssText = result.optional_css)
         $('#optional_css').text(cssText)
       else
-        $.when($.get(chrome.extension.getURL("default.css"))).done (response) ->
+        $.when($.get(chrome.extension.getURL("css/default.css"))).done (response) ->
           $('#optional_css').text(response)
-
 
     chrome.storage.sync.get 'pivotal_method', (result) ->
       if result.pivotal_method is "API"
@@ -82,7 +115,8 @@ $ ->
 
     $(document).on 'click', '.button.stories.menu', (e) ->
       $this = $(@)
-      $this.find('.items').append("<li id='print' class='item'><span class='disabled'>Print</span></li>") unless $('#print').length
+      unless $('#print').length
+        $this.find('.items').append("<li id='print' class='item'><span class='disabled'>Print</span></li>")
       if $this.find('.count').length
         $('#print span').removeClass('disabled')
       else

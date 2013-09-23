@@ -1,7 +1,7 @@
 <html>
 <head>
   <title>My Test Extension Options</title>
-  <link rel="stylesheet" type="text/css" href="options.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="css/options.css" media="screen" />
   <style id='optional_css' type="text/css"></style>
 
 </head>
@@ -20,11 +20,18 @@
     <input type="radio" name="method" value="DOM">DOM parse (simpler but limits information available for extension).<br>
   </fieldset>
 
+  <input id='toggle_html' type="button" value='Toggle the template edit'><br>
+  <div id='template_edit_block' style="display:none">
+    <textarea name="css" id="story_template" cols="80" rows="10"></textarea><br>
+    <input id='update_html' type="button" value='Check out template'><br>
+  </div><br>
+
   <input id='toggle_css' type="button" value='Toggle the css edit'><br>
   <div id="css_edit_block" style='display:none'>
     <textarea name="css" id="css_edit" cols="90" rows="30"></textarea><br>
     <input id='update_css' type="button" value='Check the css'><br>
-    <h2>Preview:</h2>
+  </div><br>
+  <h2>Preview:</h2>
     <div id="print-area" class='clearfix' style='visibility: visible'>
       <div id="print_story_random_id_here" class="card task normal background">
         <div class="story-identifier">#123456789</div>
@@ -47,15 +54,15 @@
                 <br></div>
               <div class="tags">chore</div>
             </div>
-          </div>
-  </div><br>
+          </div><br>
   <input type='submit' value='Save options' class='clearfix'><br>
 
 </form>
 <span class='notify' style='display:none;'>Your settings have been saved.</span>
 </body>
 
-<script src="jquery.min.js"></script>
-<script src="options.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/mustache.js"></script>
+<script src="js/options.js"></script>
 
 </html>

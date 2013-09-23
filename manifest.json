@@ -11,7 +11,7 @@
     "background"
   ],
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["js/background.js"]
   },
   "browser_action": {
     "default_icon": "icon.png"
@@ -20,10 +20,10 @@
   "content_scripts": [
     {
       "matches": ["https://www.pivotaltracker.com/*"],
-      "js": ["jquery.min.js", "pivy_print.js"],
-      "css": ["pivy_print.css"]
+      "js": ["js/jquery.min.js", "js/mustache.js", "js/pivy_print.js"],
+      "css": ["css/pivy_print.css"]
     }
   ],
-  "web_accessible_resources": ["default.css"]
+  "web_accessible_resources": ["css/default.css", "js/mustache.js", "default_story.html"]
 
 }

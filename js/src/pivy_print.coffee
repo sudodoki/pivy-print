@@ -18,7 +18,7 @@ attachAPIHandlers = ->
         url: "https://www.pivotaltracker.com/services/v3/projects/#{project_id}/stories/#{id}"
         success: (cardInfo, status, xhr) ->
           story_points = if $(cardInfo).find('estimate').length
-            " (" + getAttr(cardInfo, 'estimate') + ') '
+            ' (' + getAttr(cardInfo, 'estimate') + ') '
           else
             ''
           toAdd = {}
@@ -88,7 +88,23 @@ $ ->
 
     chrome.storage.sync.get 'additional_params', (result) ->
       console.log result.additional_params
-      if (params = result.additional_params)
+      # TODO: either remove extra logic or improve.
+      # if (params = result.additional_params)
+      if (params = [
+        'id',
+        'project_id',
+        'story_type',
+        'url',
+        'current_state',
+        'description',
+        'name',
+        'story_type',
+        'requested_by',
+        'owned_by',
+        'created_at',
+        'updated_at',
+        'labels'
+        ])
         $('#story_template').data 'params', params.join(', ')
 
     chrome.storage.sync.get 'template', (result) ->

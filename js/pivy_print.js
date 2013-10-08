@@ -29,7 +29,7 @@
           url: "https://www.pivotaltracker.com/services/v3/projects/" + project_id + "/stories/" + id,
           success: function(cardInfo, status, xhr) {
             var div, info, param, params, story_points, toAdd, _i, _len, _ref;
-            story_points = $(cardInfo).find('estimate').length ? " (" + getAttr(cardInfo, 'estimate') + ') ' : '';
+            story_points = $(cardInfo).find('estimate').length ? ' (' + getAttr(cardInfo, 'estimate') + ') ' : '';
             toAdd = {};
             if (params = (_ref = $('#story_template').data('params')) != null ? _ref.split(', ') : void 0) {
               for (_i = 0, _len = params.length; _i < _len; _i++) {
@@ -115,7 +115,7 @@
       chrome.storage.sync.get('additional_params', function(result) {
         var params;
         console.log(result.additional_params);
-        if ((params = result.additional_params)) {
+        if ((params = ['id', 'project_id', 'story_type', 'url', 'current_state', 'description', 'name', 'story_type', 'requested_by', 'owned_by', 'created_at', 'updated_at', 'labels'])) {
           return $('#story_template').data('params', params.join(', '));
         }
       });

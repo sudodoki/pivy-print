@@ -25,7 +25,12 @@ In order to meet the different needs and circumstances that arise across various
 
 
 ### Cusomizing CSS
-On the options page (if in trouble finding it, consult [installation section](#how-to-install)) press 'Toggle the css edit' button ([![press to enlarge](https://raw.github.com/sudodoki/pivy-print/images/edit_css1_thumb.jpg)](https://raw.github.com/sudodoki/pivy-print/images/edit_css1.jpg)), edit css in field. To see the outcome, press 'Check the css' button ([![press to enlarge](https://raw.github.com/sudodoki/pivy-print/images/edit_css2_thumb.jpg)](https://raw.github.com/sudodoki/pivy-print/images/edit_css2.jpg)) . In case you're satisfied, press 'Save options' at the bottom, otherwise just close/refresh tab to keep your previous settings. ([![press to enlarge](https://raw.github.com/sudodoki/pivy-print/images/edit_css3_thumb.jpg)](https://raw.github.com/sudodoki/pivy-print/images/edit_css3.jpg))
+On the options page (if in trouble finding it, consult [installation section](#how-to-install)) press 'Toggle the css edit' button:  
+[![press to enlarge](https://raw.github.com/sudodoki/pivy-print/images/edit_css1_thumb.jpg)](https://raw.github.com/sudodoki/pivy-print/images/edit_css1.jpg)  
+Edit css in field. To see the outcome, press 'Check the css' button:  
+[![press to enlarge](https://raw.github.com/sudodoki/pivy-print/images/edit_css2_thumb.jpg)](https://raw.github.com/sudodoki/pivy-print/images/edit_css2.jpg)  
+In case you're satisfied, press 'Save options' at the bottom, otherwise just close/refresh tab to keep your previous settings.  
+[![press to enlarge](https://raw.github.com/sudodoki/pivy-print/images/edit_css3_thumb.jpg)](https://raw.github.com/sudodoki/pivy-print/images/edit_css3.jpg)
 
 ### Customizing cards' template
 In your card template you can add any static info, text decoration etc. Also, if you're using API calls (you've inserted your key on options page), you can use next fields:
